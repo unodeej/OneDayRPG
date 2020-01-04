@@ -2,8 +2,8 @@ import numpy as np
 import os
 import time
 
-displayWidth = 100
-displayHeight = 30
+displayWidth = 160
+displayHeight = 35
 __viewports = []
 
 class Viewport:
@@ -20,7 +20,7 @@ class Viewport:
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
     __viewports.append(newViewport)
-    __viewports.sort(key = lambda vp: vp.z)
+    __viewports.sort(key = lambda vp: vp.z, reverse = True)
     return newViewport
 
 def removeViewport(viewport):
@@ -34,7 +34,7 @@ def __clearScreen():
 
 def render():
     __clearScreen()
-    frameBuffer = np.full([displayHeight, displayWidth], ".")
+    frameBuffer = np.full([displayHeight, displayWidth], " ")
     for viewport in __viewports:
         viewport.renderTo(frameBuffer)
     for row in frameBuffer:
