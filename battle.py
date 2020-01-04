@@ -47,7 +47,7 @@ class Battle():
 				if inp == j:
 					target = enemies[j-1]
 					if (target.HP <= 0):
-						print("You attack the corpse of " + target.name + ", for some reason!"))
+						print("You attack the corpse of " + target.name + ", for some reason!")
 					else:
 						print("You attack " + target.name + "!")
 					player.Attack(target)
@@ -77,7 +77,7 @@ class Battle():
 		print("Enemy Turn.")
 
 		for e in enemies:
-			if (e.HP <= 0)
+			if (e.HP <= 0):
 				continue
 			# Attack
 			print(e.name + " attacks!")
