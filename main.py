@@ -16,7 +16,11 @@ class Game():
 		self.firstStoryPoint = firstStoryPoint
 		self.storyPaused = False
 		self.pausedStoryPoint = None
+
 		self.player = Player()
+
+		self.mapEvent = False
+
 		storyPoints.game = self
 
 	def StartGame(self):
@@ -27,10 +31,14 @@ class Game():
 		if nextStoryPoint != None:
 			self.ReadStoryPoint(nextStoryPoint)
 
+	def TriggerMapEvent(self, mapName, xPos, yPos, char):
+		self.mapEvent = True
+		storyPoints.TriggerEvent(mapName, xPos, yPos, char)
+
 	def Update(self):
 		entityViewport = floorDisplay.loadRoom("floor1.txt")
 		while(self.storyPaused == True):
-			floorDisplay.Update(entityViewport)
+			floorDisplay.Update(entityViewport, self)
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()

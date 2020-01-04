@@ -19,6 +19,12 @@ class Player:
     xpos=0
     ypos=0
 
+def triggerEvent(game, mapName, xPos, yPos, char):
+    game.TriggerMapEvent(mapName, xPos, yPos, char)
+    
+    # while game.mapEvent == True:
+    #     print("map")
+
 
 #read contents of file and put into a list 
 def loadRoom(roomFile):
@@ -44,8 +50,10 @@ def loadRoom(roomFile):
 def split(word):
     return [char for char in word]
 
-def Update(entityViewport):
+def Update(entityViewport, game):
     move=cliInput.getInput()
+    if Player.xpos == 2 and Player.ypos == 2:
+        triggerEvent(game, 'map1', 2, 2, ' ')
     if move =='up':
         entityViewport.data[Player.ypos][Player.xpos] = ' '
         Player.ypos -= 1
