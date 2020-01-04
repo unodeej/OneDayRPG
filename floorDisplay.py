@@ -15,9 +15,15 @@ class Player:
     xpos=1
     ypos=1
 
+
+def triggerEvent(game, mapName, xPos, yPos, char):
+    game.TriggerMapEvent(mapName, xPos, yPos, char)
+    
+    # while game.mapEvent == True:
+    #     print("map")
+
 def split(word):
     return [char for char in word]
-
 
 class Room:
     solids= ['|','+','=','-'] 

@@ -2,6 +2,7 @@ import numpy as np
 import os
 import time
 
+transparentTile = "tt" # to get a transparent character, type display.transparent
 displayWidth = 160
 displayHeight = 35
 __viewports = []
@@ -15,7 +16,7 @@ class Viewport:
 
     def renderTo(self, buffer):
         bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
-        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == " ", bufferSlice, self.data)
+        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparentTile, bufferSlice, self.data)
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)

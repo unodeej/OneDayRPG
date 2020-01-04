@@ -77,6 +77,13 @@ def ResumeStory():
 	game.storyPaused = False
 	game.pausedStoryPoint = None
 
+def TriggerEvent(mapName, xPos, yPos, char):
+	x = str(xPos)
+	y = str(yPos)
+	story_points.get(mapName + char + x + "." + y).Run()
+	# while(True):
+	# 	print(mapName + char + x + "." + y)
+
 def OneSec():
 	time.sleep(1)
 	return True
@@ -149,6 +156,8 @@ story_points = {
 	'intro7': StoryPoint(PauseStory, 'intro7',
 		[ Choice(isTrue, False, doNothing, doNothing, 'intro8') ] ),
 
+	'map1 2.2': StoryPoint(dialogue, 'You found something sparkling in the ground',
+		[ Choice(isTrue, False, doNothing, doNothing, None) ] ),
 
 
 	'introx3': StoryPoint(dialogue, "Who's your favorite dev? (1) Kam (2) DJ (3) Brandon",
