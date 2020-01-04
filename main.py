@@ -3,12 +3,17 @@ import storyPoints
 import cliInput
 import display as dis
 import floorDisplay
+import entity
+import battle
 
-# importlib.import_module(storyPoints.py)
+enemies = [ entity.Enemy("Turbo Nerd", 3, 1, 0),
+			entity.Enemy("Turbo Nerd", 3, 1, 0), ]
+player = entity.Player(5, 2, 0)
+battle = battle.Battle(player, enemies)
 
-class Player():
-	def __init__(self):
-		self.name = ""
+battle.Start()
+
+
 
 class Game():
 	def __init__(self, firstStoryPoint):
@@ -17,7 +22,7 @@ class Game():
 		self.storyPaused = False
 		self.pausedStoryPoint = None
 
-		self.player = Player()
+		self.player = entity.Player(5, 2, 0)
 
 		self.mapEvent = False
 
@@ -30,6 +35,10 @@ class Game():
 		nextStoryPoint = story_point.Run()
 		if nextStoryPoint != None:
 			self.ReadStoryPoint(nextStoryPoint)
+
+	def Battle(player, enemies):
+		battle = Battle(player, enemies)
+
 
 	def TriggerMapEvent(self, mapName, xPos, yPos, char):
 		self.mapEvent = True
@@ -47,10 +56,3 @@ game.StartGame()
 
 
 
-# class Player():
-# 	maxHP = 5
-# 	HP = maxHP
-# 	def heal(self, amt):
-# 		self.HP += amt
-# 		if (self.HP > self.maxHP)
-# 			self.HP = self.maxHP
