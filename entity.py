@@ -25,7 +25,7 @@ class Entity():
 
 class Player(Entity):
 	def __init__(self, maxHP, attack, defense):
-		self.name = ""
+		self.name = "Sanpel"
 		Entity.__init__(self, maxHP, attack, defense)
 
 class Enemy(Entity):

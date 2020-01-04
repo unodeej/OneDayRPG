@@ -6,13 +6,6 @@ import floorDisplay
 import entity
 import battle
 
-enemies = [ entity.Enemy("Turbo Nerd", 3, 1, 0),
-			entity.Enemy("Turbo Nerd", 3, 1, 0), ]
-player = entity.Player(5, 2, 0)
-battle = battle.Battle(player, enemies)
-
-battle.Start()
-
 
 
 class Game():
