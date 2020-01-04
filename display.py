@@ -22,7 +22,8 @@ def addViewport(x, y, data, z=0):
     viewports.sort(key = lambda vp: vp.z)
     return newViewport
 
-# def addViewport(x, y, data, z=0):
+def removeViewport(viewport):
+    return viewports.remove(viewport)
 
 def clearScreen():
     if os.name == "posix":
@@ -40,10 +41,11 @@ def render():
             print(point, end = "")
         print()
 
-square = addViewport(10, 0, np.ones([10,20]))
-render()
-for i in range(20):
-    square.x += 1
-    square.y += 1
-    time.sleep(.1)
+def demo():
+    square = addViewport(10, 0, np.ones([10,20]))
     render()
+    for i in range(20):
+        square.x += 1
+        square.y += 1
+        time.sleep(.1)
+        render()
