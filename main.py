@@ -27,7 +27,7 @@ class Game():
 
 	def Update(self):
 		while(self.storyPaused == True):
-			getInput()
+			cliInput.getInput()
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()
