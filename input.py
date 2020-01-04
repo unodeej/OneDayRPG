@@ -3,16 +3,13 @@ import msvcrt as microsoft
 def getInput():
     nextInput = microsoft.getwch()
     if nextInput in "aA":
-        print("left")
+        return 'left'
     if nextInput in "dD":
-        print("right")
+        return 'right'
     if nextInput in "wW":
-        print("up")
+        return 'up'
     if nextInput in "sS":
-        print("down")
+        return 'down'
     if nextInput in "qQ":
         print("quitting...")
         exit(0);
-
-while(True):
-    getInput()
