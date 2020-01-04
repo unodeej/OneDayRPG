@@ -20,7 +20,7 @@ class Viewport:
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
     __viewports.append(newViewport)
-    __viewports.sort(key = lambda vp: vp.z, reverse = true)
+    __viewports.sort(key = lambda vp: vp.z, reverse = True)
     return newViewport
 
 def removeViewport(viewport):

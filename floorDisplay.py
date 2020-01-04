@@ -4,6 +4,7 @@ Created on Fri Jan  3 15:58:50 2020
 
 @author: Kam Look
 """
+import numpy as np
 import msvcrt as microsoft
 import display as dis
 
@@ -19,6 +20,10 @@ def getInput():
         return 'down'
     if nextInput in "qQ":
         return 'quit'
+
+def updatePlayerPos():
+    entityViewport.data[Player.ypos][Player.xpos]=Player.icon
+    dis.render()
     
 #Tile list
 class Player:
@@ -35,34 +40,41 @@ floorDisplay=file.readlines().copy()
 file.close()
 
 #remove white space 
-originalFloor=floorDisplay
+
 floorDisplay[:] = [row.strip('\n') for row in floorDisplay]
 floorDisplay[:] = [row.strip('\t') for row in floorDisplay]
 floorDisplay[:] = [split(row) for row in floorDisplay]
+originalFloor=floorDisplay
+#initialize transparent layer for entities
+entityArray= np.full_like(floorDisplay, ' ')
 
 floorViewport=dis.addViewport(0,0,floorDisplay)
-dis.render()
-
-playerViewport= dis.addViewport(Player.xpos,Player.ypos, Player.icon,z= -1)
+entityViewport=dis.addViewport(0,0,entityArray, z=-1)
+updatePlayerPos()
 
 while True:
     move=getInput()
     if move =='up':
-        playerViewport.y -= 1
-        dis.render()
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.ypos -= 1
+        updatePlayerPos()
         
     if move == 'down':
-        playerViewport.y += 1
-        dis.render()
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.ypos += 1
+        updatePlayerPos()
         
     if move == 'right':
-        playerViewport.x += 1
-        dis.render()
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.xpos += 1
+        updatePlayerPos()
         
     if move == 'left':
-        playerViewport.x -= 1
-        dis.render()
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.xpos -= 1
+        updatePlayerPos()
     
     if move == 'quit':
         exit(0)
+
 
