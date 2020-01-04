@@ -4,7 +4,7 @@ import time
 
 displayWidth = 100
 displayHeight = 30
-viewports = []
+__viewports = []
 
 class Viewport:
     def __init__(self, x, y, data, z=0):
@@ -25,7 +25,7 @@ def addViewport(x, y, data, z=0):
 def removeViewport(viewport):
     return viewports.remove(viewport)
 
-def clearScreen():
+def __clearScreen():
     if os.name == "posix":
         os.system('clear')
     else: # current os is windows
