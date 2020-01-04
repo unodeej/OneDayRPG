@@ -14,7 +14,8 @@ class Viewport:
         self.z = z;
 
     def renderTo(self, buffer):
-        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = self.data
+        bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
+        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == " ", bufferSlice, self.data)
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
@@ -42,7 +43,8 @@ def render():
         print()
 
 def demo():
-    square = addViewport(10, 0, np.ones([10,20]))
+    # square = addViewport(10, 0, np.ones([10,20]))
+    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|'] * 6] * 10)
     render()
     for i in range(20):
         square.x += 1
