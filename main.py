@@ -38,9 +38,10 @@ class Game():
 		storyPoints.TriggerEvent(mapName, xPos, yPos, char)
 
 	def Update(self):
-		entityViewport = floorDisplay.loadRoom("floor1.txt")
+		entityViewport = floorDisplay.room.loadRoom("floor1.txt")
 		while(self.storyPaused == True):
-			floorDisplay.Update(entityViewport, self)
+			floorDisplay.room.Update()
+
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()

@@ -2,7 +2,7 @@ import numpy as np
 import os
 import time
 
-transparentTile = "tt" # to get a transparent character, type display.transparent
+transparentTile = " " # to get a transparent character, type display.transparent
 displayWidth = 160
 displayHeight = 35
 __viewports = []
