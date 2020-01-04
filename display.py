@@ -14,6 +14,9 @@ class Viewport:
         self.data = np.asarray(data);
         self.z = z;
 
+    def replaceData(self, data):
+        self.data = np.asarray(data);
+
     def renderTo(self, buffer):
         bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
         buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparentTile, bufferSlice, self.data)
@@ -45,7 +48,7 @@ def render():
 
 def demo():
     # square = addViewport(10, 0, np.ones([10,20]))
-    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|'] * 6] * 10)
+    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparentTile, transparentTile, transparentTile, '|'] * 3] * 10)
     render()
     for i in range(20):
         square.x += 1
