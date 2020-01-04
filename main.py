@@ -1,7 +1,8 @@
 # import importlib
 import storyPoints
 import cliInput
-import display
+import display as dis
+import floorDisplay
 
 # importlib.import_module(storyPoints.py)
 
@@ -11,6 +12,7 @@ class Player():
 
 class Game():
 	def __init__(self, firstStoryPoint):
+		
 		self.firstStoryPoint = firstStoryPoint
 		self.storyPaused = False
 		self.pausedStoryPoint = None
@@ -26,8 +28,9 @@ class Game():
 			self.ReadStoryPoint(nextStoryPoint)
 
 	def Update(self):
+		floorDisplay.loadRoom("floor1.txt")
 		while(self.storyPaused == True):
-			cliInput.getInput()
+			print(cliInput.getInput())
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()
