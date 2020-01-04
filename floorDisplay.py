@@ -7,20 +7,18 @@ Created on Fri Jan  3 15:58:50 2020
 import numpy as np
 #import msvcrt as microsoft
 import display as dis
-
+import cliInput
 
 def updatePlayerPos(entityViewport):
     entityViewport.data[Player.ypos][Player.xpos]=Player.icon
     dis.render()
-    
+
 #Tile list
 class Player:
     icon='@'
     xpos=0
     ypos=0
-    
-def split(word): 
-    return [char for char in word]  
+
 
 #read contents of file and put into a list 
 def loadRoom(roomFile):
@@ -29,8 +27,7 @@ def loadRoom(roomFile):
     floorDisplay=file.readlines().copy()
     file.close()
 
-    #remove white space 
-
+    #remove white space
     floorDisplay[:] = [row.strip('\n') for row in floorDisplay]
     floorDisplay[:] = [row.strip('\t') for row in floorDisplay]
     floorDisplay[:] = [split(row) for row in floorDisplay]
@@ -42,29 +39,5 @@ def loadRoom(roomFile):
     entityViewport=dis.addViewport(0,0,entityArray, z=-1)
     updatePlayerPos(entityViewport)
 
-# while True:
-#     move=getInput()
-#     if move =='up':
-#         entityViewport.data[Player.ypos][Player.xpos] = ' '
-#         Player.ypos -= 1
-#         updatePlayerPos()
-        
-#     if move == 'down':
-#         entityViewport.data[Player.ypos][Player.xpos] = ' '
-#         Player.ypos += 1
-#         updatePlayerPos()
-        
-#     if move == 'right':
-#         entityViewport.data[Player.ypos][Player.xpos] = ' '
-#         Player.xpos += 1
-#         updatePlayerPos()
-        
-#     if move == 'left':
-#         entityViewport.data[Player.ypos][Player.xpos] = ' '
-#         Player.xpos -= 1
-#         updatePlayerPos()
-    
-#     if move == 'quit':
-#         exit(0)
-
-
+def split(word):
+    return [char for char in word]
