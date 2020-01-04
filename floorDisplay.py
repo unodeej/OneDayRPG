@@ -39,5 +39,32 @@ def loadRoom(roomFile):
     entityViewport=dis.addViewport(0,0,entityArray, z=-1)
     updatePlayerPos(entityViewport)
 
+    return entityViewport
+
 def split(word):
     return [char for char in word]
+
+def Update(entityViewport):
+    move=cliInput.getInput()
+    if move =='up':
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.ypos -= 1
+        updatePlayerPos(entityViewport)
+
+    if move == 'down':
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.ypos += 1
+        updatePlayerPos(entityViewport)
+
+    if move == 'right':
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.xpos += 1
+        updatePlayerPos(entityViewport)
+
+    if move == 'left':
+        entityViewport.data[Player.ypos][Player.xpos] = ' '
+        Player.xpos -= 1
+        updatePlayerPos(entityViewport)
+
+    if move == 'quit':
+        exit(0)

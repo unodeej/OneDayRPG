@@ -28,9 +28,9 @@ class Game():
 			self.ReadStoryPoint(nextStoryPoint)
 
 	def Update(self):
-		floorDisplay.loadRoom("floor1.txt")
+		entityViewport = floorDisplay.loadRoom("floor1.txt")
 		while(self.storyPaused == True):
-			print(cliInput.getInput())
+			floorDisplay.Update(entityViewport)
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()
