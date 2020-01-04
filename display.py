@@ -18,12 +18,12 @@ class Viewport:
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
-    viewports.append(newViewport)
-    viewports.sort(key = lambda vp: vp.z)
+    __viewports.append(newViewport)
+    __viewports.sort(key = lambda vp: vp.z)
     return newViewport
 
 def removeViewport(viewport):
-    return viewports.remove(viewport)
+    return __viewports.remove(viewport)
 
 def __clearScreen():
     if os.name == "posix":
@@ -32,9 +32,9 @@ def __clearScreen():
         os.system('cls')
 
 def render():
-    clearScreen()
+    __clearScreen()
     frameBuffer = np.full([displayHeight, displayWidth], ".")
-    for viewport in viewports:
+    for viewport in __viewports:
         viewport.renderTo(frameBuffer)
     for row in frameBuffer:
         for point in row:

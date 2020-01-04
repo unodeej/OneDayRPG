@@ -1,7 +1,17 @@
-import msvcrt as microsoft
+import os
+
+if (os.name == 'posix'):
+    import tty
+    import sys
+else: # current os is windows
+    import msvcrt as microsoft
 
 def getInput():
-    nextInput = microsoft.getwch()
+    if (os.name == 'posix'):
+        tty.setcbreak(sys.stdin)
+        nextInput = sys.stdin.read(1)[0]
+    else: # current os is windows
+        nextInput = microsoft.getwch()
     if nextInput in "aA":
         print("left")
     if nextInput in "dD":
