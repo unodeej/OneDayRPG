@@ -37,7 +37,7 @@ class Popup:
 
 
     def show(self):
-        self.viewport = display.addViewport(self.x, self.y, p.data)
+        self.viewport = display.addViewport(self.x, self.y, self.data)
 
     def hide(self):
         if self.viewport is not None:
@@ -52,7 +52,10 @@ class Button():
         self.text = text
         self.hotkey = hotkey
 
-p = Popup(
-    text="There once was a man from Kentucky. With cars, he was not very lucky.  When his truck broke down, the mechanic skipped town, for he and the man's wife did fuck(y)",
-    buttons = [Button(text="okay", hotkey="o"), Button(text="whatever", hotkey="w")]
-)
+def demo():
+    p = Popup(
+        text="There once was a man from Kentucky. With cars, he was not very lucky.  When his truck broke down, the mechanic skipped town, for he and the man's wife did fuck(y)",
+        buttons = [Button(text="okay", hotkey="o"), Button(text="whatever", hotkey="w")]
+    )
+    p.show()
+    display.render()
