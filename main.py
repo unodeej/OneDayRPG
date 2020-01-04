@@ -1,5 +1,6 @@
 # import importlib
 import storyPoints
+import cliInput
 import display
 
 # importlib.import_module(storyPoints.py)
