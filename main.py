@@ -10,18 +10,22 @@ class Player():
 class Game():
 	def __init__(self, firstStoryPoint):
 		self.firstStoryPoint = firstStoryPoint
-		self.eventTrigger = False;
-
-	def StartGame(self):
+		self.storyPaused = False
+		self.pausedStoryPoint = None
 		self.player = Player()
 		storyPoints.game = self
-		
+
+	def StartGame(self):
 		self.ReadStoryPoint(self.firstStoryPoint)
 
 	def ReadStoryPoint(self, story_point):
 		nextStoryPoint = story_point.Run()
 		if nextStoryPoint != None:
 			self.ReadStoryPoint(nextStoryPoint)
+
+	def Update(self):
+		while(self.storyPaused == True):
+			getInput()
 
 game = Game(storyPoints.story_points.get('intro1'))
 game.StartGame()

@@ -4,7 +4,7 @@ import time
 
 displayWidth = 100
 displayHeight = 30
-viewports = []
+__viewports = []
 
 class Viewport:
     def __init__(self, x, y, data, z=0):
@@ -18,23 +18,23 @@ class Viewport:
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
-    viewports.append(newViewport)
-    viewports.sort(key = lambda vp: vp.z)
+    __viewports.append(newViewport)
+    __viewports.sort(key = lambda vp: vp.z)
     return newViewport
 
 def removeViewport(viewport):
-    return viewports.remove(viewport)
+    return __viewports.remove(viewport)
 
-def clearScreen():
+def __clearScreen():
     if os.name == "posix":
         os.system('clear')
     else: # current os is windows
         os.system('cls')
 
 def render():
-    clearScreen()
+    __clearScreen()
     frameBuffer = np.full([displayHeight, displayWidth], ".")
-    for viewport in viewports:
+    for viewport in __viewports:
         viewport.renderTo(frameBuffer)
     for row in frameBuffer:
         for point in row:

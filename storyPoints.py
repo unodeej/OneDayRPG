@@ -1,8 +1,9 @@
 class StoryPoint():
-	def __init__(self, startAction, arg, choices):
+	def __init__(self, startAction, arg, choices, trigger = None):
 		self.startAction = startAction
 		self.arg = arg
 		self.choices = choices
+		self.trigger = trigger
 
 	def Run(self):
 		self.startAction(self.arg)
@@ -61,13 +62,16 @@ def getInputInt(msg = ""):
 def assignName(name):
 	game.player.Name = name
 
-def waitForEvent(arg = ''):
-	if game.eventTrigger == True:
-		game.eventTrigger = False
-		return True
-	else:
-		print("FAIL")
-		return waitForEvent()
+def PauseStory(arg = ''):
+	# Create a listener in Game
+	game.storyPaused = True
+	game.pausedStoryPoint = arg
+	game.Update()
+
+def ResumeStory():
+	game.storyPaused = False
+	game.pausedStoryPoint = None
+
 
 story_points = {
 	'intro1': StoryPoint(dialogue, "Welcome to One Day RPG!",
@@ -93,9 +97,11 @@ story_points = {
 	'intro4': StoryPoint(dialogue, "Please walk to the end of the hall",
 		[ Choice(isTrue, True, doNothing, doNothing, 'intro5') ] ),
 
-	'intro5': StoryPoint(waitForEvent, "",
-		[ Choice(isTrue, True, doNothing, doNothing, None) ] ),
+	'intro5': StoryPoint(PauseStory, 'intro6',
+		[ Choice(isTrue, False, doNothing, doNothing, 'intro6') ] ),
 
+	'intro6': StoryPoint(dialogue, "Yayyy you made it!",
+		[ Choice(isTrue, True, doNothing, doNothing, None) ] )
 
 	}
 
