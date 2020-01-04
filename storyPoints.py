@@ -6,10 +6,13 @@ class StoryPoint():
 
 	def Run(self):
 		self.startAction(self.arg)
+		cond = self.choices[0].conditionFunc();
 		for c in self.choices:
-			if c.conditionFunc() == c.conditionVal:
+			if cond == c.conditionVal:
 				c.processResponse(c.responseAction())
 				return story_points.get(c.link)
+		# if none of the choices fired
+		return self
 
 
 class Choice():
@@ -30,11 +33,11 @@ player = Player()
 def dialogue(msg):
 	print(msg)
 
-def true():
-	return true
+def isTrue():
+	return True
 
-def doNothing(arg):
-	return
+def doNothing(arg = ""):
+	return None
 
 def wait():
 	try:
@@ -42,21 +45,52 @@ def wait():
 	except SyntaxError:
 	    pass
 
-def getInput(msg = ""):
+def getInputStr(msg = ""):
 	return raw_input(msg)
+	
+
+def getInputInt(msg = ""):
+	c = input(msg)
+	try:
+	   val = int(c)
+	   return val
+	except ValueError:
+	  try:
+	    val = float(user_input)
+	    print("Please input a whole number")
+	    return getInputInt(msg)
+	  except ValueError:
+	      print("Please input a number")
+	      return getInputInt(msg)
 
 def assignName(name):
 	player.Name = name
 
 story_points = {
 	'intro1': StoryPoint(dialogue, "Welcome to One Day RPG!",
-		[ Choice(true, true, wait, doNothing, 'intro2' ) ] ),
+		[ Choice(isTrue, True, wait, doNothing, 'intro3' ) ] ),
 
 	'intro2': StoryPoint(dialogue, "What is your name?",
-		[ Choice(true, true, getInput, assignName, 'intro3') ] ),
+		[ Choice(isTrue, True, getInputStr, assignName, 'intro3') ] ),
 
 	'intro3': StoryPoint(dialogue, "Who's your favorite dev? (1) Kam (2) DJ (3) Brandon",
-		[ Choice(getInput, 1, "Nice Choice", dialogue, None) ] )
+		[ Choice(getInputInt, 1, doNothing, doNothing, 'introKam'),
+		  Choice(None, 2, doNothing, doNothing, 'introDJ'),
+		  Choice(None, 3, doNothing, doNothing, 'introBran'),
+		  Choice(None, True, doNothing, doNothing, 'intro3') ] ),
+
+	'introKam': StoryPoint(dialogue, "Sick, Kam is a homie",
+		[ Choice(isTrue, True, wait, doNothing, 'intro4') ] ),
+
+	'introDJ': StoryPoint(dialogue, "That's the correct choice, DJ rules",
+		[ Choice(isTrue, True, wait, doNothing, 'intro4') ] ),
+
+	'introBran': StoryPoint(dialogue, "Awesome, Brandon is lit yo",
+		[ Choice(isTrue, True, wait, doNothing, 'intro4') ] ),
+
+	'intro4': StoryPoint(dialogue, "The end",
+		[ Choice(isTrue, True, doNothing, doNothing, None) ] ),
+
 
 	}
 
