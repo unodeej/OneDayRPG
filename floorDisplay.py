@@ -43,7 +43,7 @@ class Room:
         floorDisplay[:] = [row.strip('\t') for row in floorDisplay]
         floorDisplay[:] = [split(row) for row in floorDisplay]
         #initialize transparent layer for entities
-        entityArray= np.full_like(floorDisplay, ' ')
+        entityArray= np.full_like(floorDisplay, dis.transparentTile)
     
         self.floorViewport=dis.addViewport(0,0,floorDisplay)
         self.entityViewport=dis.addViewport(0,0,entityArray,z =-1)
@@ -57,7 +57,7 @@ class Room:
             newPos= Player.ypos -1
             self.CheckTile(newPos, Player.xpos, self.floorViewport.data[newPos][Player.xpos])
             if self.canMove == True:
-                self.entityViewport.data[Player.ypos][Player.xpos] = ' '
+                self.entityViewport.data[Player.ypos][Player.xpos] = dis.transparentTile
                 Player.ypos = newPos
                 self.updatePlayerPos()
     
@@ -65,7 +65,7 @@ class Room:
             newPos=Player.ypos +1
             self.CheckTile(newPos, Player.xpos, self.floorViewport.data[newPos][Player.xpos])
             if self.canMove == True:
-                self.entityViewport.data[Player.ypos][Player.xpos] = ' '
+                self.entityViewport.data[Player.ypos][Player.xpos] = dis.transparentTile
                 Player.ypos = newPos
                 self.updatePlayerPos()
     
@@ -73,7 +73,7 @@ class Room:
             newPos=Player.xpos +1
             self.CheckTile(Player.ypos, newPos, self.floorViewport.data[Player.ypos][newPos])
             if self.canMove == True:
-                self.entityViewport.data[Player.ypos][Player.xpos] = ' '
+                self.entityViewport.data[Player.ypos][Player.xpos] = dis.transparentTile
                 Player.xpos = newPos
                 self.updatePlayerPos()
     
@@ -81,7 +81,7 @@ class Room:
             newPos= Player.xpos -1
             self.CheckTile(Player.ypos, newPos, self.floorViewport.data[Player.ypos][newPos])
             if self.canMove == True:
-                self.entityViewport.data[Player.ypos][Player.xpos] = ' '
+                self.entityViewport.data[Player.ypos][Player.xpos] = dis.transparentTile
                 Player.xpos = newPos
                 self.updatePlayerPos()
     
