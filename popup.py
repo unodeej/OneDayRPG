@@ -8,11 +8,12 @@ class Popup:
     border = 2
     textPerLine = width - 2*border
 
-    def __init__(self, text, buttons, centeredOnScreen=True, x=0, y=0):
+    def __init__(self, text, buttons, centeredOnScreen=True, x=0, y=0, z=-1000):
         self.text = text
         self.buttons = buttons
         borderSymbol = "░"
 
+        self.z = z
         if not centeredOnScreen:
             self.x = x
             self.y = y
@@ -37,7 +38,7 @@ class Popup:
 
 
     def show(self):
-        self.viewport = display.addViewport(self.x, self.y, self.data)
+        self.viewport = display.addViewport(self.x, self.y, self.data, self.z)
 
     def hide(self):
         if self.viewport is not None:
