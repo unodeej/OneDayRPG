@@ -2,7 +2,7 @@ import numpy as np
 import os
 import time
 
-transparentTile = " " # to get a transparent character, type display.transparent
+transparentTile = " " # to get a transparent character, type display.transparent. using ASCII alt+255
 displayWidth = 160
 displayHeight = 35
 __viewports = []
@@ -13,6 +13,9 @@ class Viewport:
         self.y = y;
         self.data = np.asarray(data);
         self.z = z;
+
+    def replaceData(self, data):
+        self.data = np.asarray(data);
 
     def renderTo(self, buffer):
         bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
@@ -49,7 +52,7 @@ def render():
 
 def demo():
     # square = addViewport(10, 0, np.ones([10,20]))
-    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|'] * 6] * 10)
+    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparentTile, transparentTile, transparentTile, '|'] * 3] * 10)
     render()
     for i in range(20):
         square.x += 1
