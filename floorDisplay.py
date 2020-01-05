@@ -8,6 +8,7 @@ import numpy as np
 #import msvcrt as microsoft
 import display as dis
 import cliInput
+import UI
 #Tile list
 
 class Player:
@@ -26,8 +27,12 @@ def split(word):
     return [char for char in word]
 
 class Room:
-    solids= ['|','+','=','-'] 
+    solids = ['|','+','=','-', 'B', '.', ':', '/'] 
+    interactables = ['B', '.', ':', '/']
     canMove = True
+    mapName = ""
+    game = None
+
     def updatePlayerPos(self):
         self.entityViewport.data[Player.ypos][Player.xpos]=Player.icon
         dis.render()
@@ -38,6 +43,8 @@ class Room:
         floorDisplay=file.readlines().copy()
         file.close()
     
+        self.mapName = roomFile.replace('.txt', '')
+
         #remove white space
         floorDisplay[:] = [row.strip('\n') for row in floorDisplay]
         floorDisplay[:] = [row.strip('\t') for row in floorDisplay]
@@ -50,6 +57,11 @@ class Room:
         self.updatePlayerPos()
     
         return self.entityViewport
+
+    def unloadRoom(self):
+        self.entityViewport.data.clear()
+        self.entityViewport = None
+        self.floorViewport = None
     
     def Update(self):
         move=cliInput.getInput()
@@ -90,13 +102,21 @@ class Room:
     def CheckTile(self, newYPos, newXPos, icon):
         if icon in self.solids:
             self.canMove=False
-        elif 2<=newYPos<=3 and 2<=newXPos<=3:
-            self.canMove=False, print('The bed DOES look enticing, but you are late :(') #triggerAction()
+
+        if icon in self.interactables:
+            try:
+                triggerEvent(self.game, self.mapName, newXPos, newYPos, icon)
+            except:
+                print('missing description')
+
+        # elif 2<=newYPos<=3 and 2<=newXPos<=3:
+        #     self.canMove=False, UI.message('The bed DOES look enticing, but you are late :(') #triggerAction()
         
-        elif 1<=newYPos<=4 and 17<=newXPos<=21:
-            self.canMove=False, print('Your desk is cluttered, but you can clean it later...') #triggerAction()
-        elif newYPos==7 and newXPos == 33:
-            self.canMove=False, print("You can't go to school without your backpack!") #triggerAction()
+        # elif 1<=newYPos<=4 and 17<=newXPos<=21:
+        #     self.canMove=False, UI.message('Your desk is cluttered, but you can clean it later...') #triggerAction()
+        # elif newYPos==7 and newXPos == 33:
+        #     self.canMove=False, UI.message("You can't go to school without your backpack!") #triggerAction()
+
         else: 
             self.canMove=True
 

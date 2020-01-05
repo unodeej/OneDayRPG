@@ -20,6 +20,7 @@ class Game():
 		self.mapEvent = False
 
 		storyPoints.game = self
+		floorDisplay.room.game = self
 
 	def StartGame(self):
 		self.ReadStoryPoint(self.firstStoryPoint)

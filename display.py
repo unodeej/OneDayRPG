@@ -27,6 +27,10 @@ def addViewport(x, y, data, z=0):
 def removeViewport(viewport):
     return __viewports.remove(viewport)
 
+def clearViewports():
+    for v in __viewports:
+        __viewports.remove(v)
+
 def __clearScreen():
     if os.name == "posix":
         os.system('clear')

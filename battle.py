@@ -1,21 +1,12 @@
 import UI
+import entity
+import random
 
 def getInputInt():
-	c = input()
-	try:
-	   val = int(c)
-	   return val
-	except ValueError:
-	  try:
-	    val = float(user_input)
-	    UI.message("Invalid input.")
-	    return getInputInt(msg)
-	  except ValueError:
-	      UI.message("Invalid input.")
-	      return getInputInt(msg)
+	return UI.getInputAnyInt()
 
 def question(msg):
-	return UI.question(UI.ui, msg)
+	return UI.question(msg)
 
 class Battle():
 	def __init__(self, player, enemies):
@@ -38,6 +29,11 @@ class Battle():
 	def PlayerTurn(self):
 		player = self.player
 		enemies = self.enemies
+
+		for b in player.buffs:
+			b.duration -= 1
+			if b.duration <= 0:
+				player.ExpireBuff(b)
 
 		question("It's your turn. (1) Attack (2) Guard (3) Item (4) Run")
 		inp = getInputInt()
@@ -67,6 +63,8 @@ class Battle():
 		elif (inp == 2):
 			# Guard
 			UI.message("You guard.")
+			b = entity.Buff("defense", 1, 1)
+			player.UseBuff(b)
 		elif (inp == 3):
 			# Item
 			UI.message("You have no items, nerd.")
@@ -84,14 +82,17 @@ class Battle():
 		player = self.player
 		enemies = self.enemies
 
-		UI.message("Enemy Turn.")
+		msg = ""
+		for e in enemies:
+			msg += random.choice(e.flavorText) + " "
+		UI.message(msg)
 
 		msg = ""
 		for e in enemies:
 			if (e.HP <= 0):
 				continue
 			# Attack
-			msg += e.name + " attacks! "
+			msg += random.choice(e.attackText) + " "
 			e.Attack(player)
 			msg += player.name + ": [" + str(player.HP) + "/" + str(player.maxHP) + "] "
 		UI.message(msg)

@@ -48,7 +48,7 @@ def doNothing(arg = ""):
 
 
 def assignName(name):
-	game.player.Name = name
+	game.player.name = name
 
 def PauseStory(arg = ''):
 	# Create a listener in Game
@@ -63,38 +63,50 @@ def ResumeStory():
 def TriggerEvent(mapName, xPos, yPos, char):
 	x = str(xPos)
 	y = str(yPos)
-	story_points.get(mapName + char + x + "." + y).Run()
+	print(mapName + ' ' + x + "." + y)
+	story_points.get(mapName + ' ' + x + "." + y).Run()
 	# while(True):
 	# 	print(mapName + char + x + "." + y)
 
 def dialogue(msg):
-	return UI.dialogue(UI.ui, msg)
+	return UI.dialogue(msg)
+
+def exitMap(msg):
+	UI.clearMap()
+	ResumeStory()
+	return UI.dialogue(msg)
 
 def question(msg):
-	return UI.question(UI.ui, msg)
+	return UI.question(msg)
+
+def questionWithName(msg):
+	return UI.dialogue(game.player.name + msg)
 
 
 
 story_points = {
 	'intro1': StoryPoint(dialogue, "Welcome to One Day RPG!",
-		[ Choice(isTrue, True, UI.wait, doNothing, 'intro4.2.6' ) ] ),
+		[ Choice(isTrue, True, UI.wait, doNothing, 'intro6' ) ] ),
 
 	'intro2': StoryPoint(dialogue, "What is your name?",
-		[ Choice(isTrue, True, UI.getInputStr, assignName, 'intro3.1') ] ),
+		[ Choice(isTrue, True, UI.getInputStr, assignName, 'intro2.1') ] ),
+	'intro2.1': StoryPoint(questionWithName, ": That's your name? (1) Yes (2) No",
+		[ Choice(UI.getInputInt, 1, doNothing, doNothing, 'intro3.1'),
+		  Choice(True, 2, doNothing	, doNothing, 'intro2') ] ),
 
-	'intro3.1': StoryPoint(dialogue, ".",
+	'intro3.1': StoryPoint(UI.auto, ".",
 		[ Choice(UI.OneSec, True, doNothing, doNothing, 'intro3.2') ] ),
-	'intro3.2': StoryPoint(dialogue, ".",
+	'intro3.2': StoryPoint(UI.auto, ".",
 		[ Choice(UI.OneSec, True, doNothing, doNothing, 'intro3.3') ] ),
-	'intro3.3': StoryPoint(dialogue, ".",
+	'intro3.3': StoryPoint(UI.auto, ".",
 		[ Choice(UI.OneSec, True, doNothing, doNothing, 'intro3.4') ] ),
 
 	'intro3.4': StoryPoint(dialogue, "7:00 A.M.",
-		[ Choice(isTrue, True, doNothing, doNothing, 'intro3.5') ] ),
-	'intro3.5': StoryPoint(dialogue, "Zzzzzzzzz.....",
-		[ Choice(isTrue, True, doNothing, doNothing, 'intro3.6') ] ),
-	'intro3.6': StoryPoint(dialogue, "Zzzzzzzzzzzzzz........",
-		[ Choice(isTrue, True, doNothing, doNothing, 'intro4.1') ] ),
+		[ Choice(isTrue, True, UI.wait, doNothing, 'intro3.5') ] ),
+	'intro3.5': StoryPoint(UI.auto, "Zzzzzzzzz.....",
+		[ Choice(UI.OneSec, True, doNothing, doNothing, 'intro3.6') ] ),
+	'intro3.6': StoryPoint(UI.auto, "Zzzzzzzzzzzzzz........",
+		[ Choice(UI.OneSec, True, doNothing, doNothing, 'intro4.1') ] ),
 
 	'intro4.1': StoryPoint(question, "You hear a blaring alarm clock. (1) Turn off the alarm (2) Let it ring",
 		[ Choice(UI.getInputInt, 1, doNothing, doNothing, 'intro4.2'),
@@ -133,8 +145,15 @@ story_points = {
 	'intro4.2.6': StoryPoint(question, "You sink deeper into the mattress, a sense of sleepiness descending upon you as you accept a life bound to eternal slumber. But then you are gripped with a sudden sense of determination, as you realize you are too young to die here in this bed. (1) Fight",
 		[ Choice(UI.getInputInt, 1, doNothing, doNothing, 'intro5') ] ),
 
-	'intro5': StoryPoint(battle, [ entity.Enemy("Turbo Nerd", 3, 1, 0),
-								   entity.Enemy("Turbo Nerd", 3, 1, 0), ],
+	'intro5': StoryPoint(battle, [ entity.Enemy("BED", 1000, 1, 0,
+												["BED stares at you enticingly, tempting you to dive into its sheets.",
+												 "BED reminds you of all the years you spent together.",
+												 "BED’s sheets rustle ominously.",
+												 "BED creaks under its own massive weight."],
+												["BED's Blankets wrap around your throat!",
+												 "The pain from BED's attacks feels too real to be a bad dream!",
+												 "BED's Pillows smother you, making it hard to breathe!",
+												 "The overwhelming scent of BED's fabric softener makes you gag!",] ) ],
 		[ Choice(isTrue, True, doNothing, doNothing, 'intro6') ] ),
 
 	'intro6': StoryPoint(dialogue, "You get up to walk around your room.",
@@ -143,8 +162,45 @@ story_points = {
 	'intro7': StoryPoint(PauseStory, 'intro7',
 		[ Choice(isTrue, False, doNothing, doNothing, 'intro8') ] ),
 
-	'map1 2.2': StoryPoint(dialogue, 'You found something sparkling in the ground',
-		[ Choice(isTrue, False, doNothing, doNothing, None) ] ),
+	'floor1 2.2': StoryPoint(dialogue, 'The bed DOES look enticing, but you are late :(',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 2.3': StoryPoint(dialogue, 'The bed DOES look enticing, but you are late :(',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 3.2': StoryPoint(dialogue, 'The bed DOES look enticing, but you are late :(',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 3.3': StoryPoint(dialogue, 'The bed DOES look enticing, but you are late :(',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+
+	'floor1 17.1': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 17.2': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 17.3': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 17.4': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 18.1': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 19.1': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 20.1': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 20.2': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 20.3': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 20.4': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 18.4': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	'floor1 19.4': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
+		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
+	
+
+    'floor1 30.7': StoryPoint(exitMap, 'Time to go!',
+		[ Choice(isTrue, True, UI.wait, doNothing, 'intro2') ] ),
+	'floor1 31.7': StoryPoint(exitMap, 'Time to go!',
+		[ Choice(isTrue, True, UI.wait, doNothing, 'intro2') ] ),
 
 
 	'introx3': StoryPoint(dialogue, "Who's your favorite dev? (1) Kam (2) DJ (3) Brandon",

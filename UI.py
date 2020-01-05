@@ -1,4 +1,6 @@
 import popup
+import time
+import display
 
 class UI():
 	def __init__(self):
@@ -21,10 +23,17 @@ class UI():
 
 ui = UI()
 
-def dialogue(u, msg):
-	u.CreatePopup(msg, [popup.Button(text="enter", hotkey=" ")] )
+# This isn't working yet! how to unload a room, @kam?
+def clearMap():
+	floorDisplay.unloadRoom()
 
-def question(u, msg):
+def auto(msg):
+	ui.CreatePopup(msg, [])
+
+def dialogue(msg):
+	ui.CreatePopup(msg, [popup.Button(text="enter", hotkey=" ")] )
+
+def question(msg):
 	i = 0
 	newMsg = msg
 
@@ -50,11 +59,13 @@ def question(u, msg):
 			buttonText = msg[(msg.find(findMeFront) + len(findMe) ):msg.find(findMeEnd) ]
 		myButtons.append(popup.Button(text=buttonText, hotkey=str(j)))
 
-	u.CreatePopup(newMsg, myButtons)
+	ui.CreatePopup(newMsg, myButtons)
 
 def message(msg):
-	dialogue(ui, msg)
+	dialogue(msg)
 	wait()
+
+	
 
 def OneSec():
 	time.sleep(1)
@@ -63,24 +74,31 @@ def OneSec():
 def wait():
 	try:
 	    input("")
+	    ui.HidePopup()
 	except SyntaxError:
 	    pass
 
 def getInputStr(msg = ""):
-	return str(input(msg))
+	m = input(msg)
+	ui.HidePopup()
+	return str(m)
+
+def getInputIntHelper(c):
+	try:
+		ui.HidePopup()
+		val = int(c)
+
+		return val
+	except ValueError:
+		print("Please input a number")
+		return getInputInt(c)
 	
 def getInputInt(msg = ""):
 	c = input(msg)
-	try:
-	   val = int(c)
-	   return val
-	except ValueError:
-	  try:
-	    val = float(user_input)
-	    print("Please input a whole number")
-	    return getInputInt(msg)
-	  except ValueError:
-	      print("Please input a number")
-	      return getInputInt(msg)
+	return getInputIntHelper(c)
+	
 
+def getInputAnyInt():
+	c = input()
+	return getInputIntHelper(c)
 

@@ -40,6 +40,7 @@ class Popup:
         self.viewport = display.addViewport(self.x, self.y, self.data)
 
     def hide(self):
+        # display.clearViewports()
         if self.viewport is not None:
             display.removeViewport(self.viewport)
 
