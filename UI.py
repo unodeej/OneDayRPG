@@ -1,4 +1,5 @@
 import popup
+import feed
 import time
 import display
 
@@ -7,19 +8,38 @@ class UI():
 		self.p = popup.Popup(
 			text = "",
 			buttons = []
-			)
+		)
+		# create feed.  Right now, the game only needs one feed
+		self.f = feed.Feed(
+			x=display.width - 60,
+			y=0,
+			width=60,
+			height=display.height,
+			z=-1
+		)
+		self.f.show()
 
 	def CreatePopup(self, msg, buttons):
+		# hide the previously displayed popup
+		self.HidePopup()
+
+		# create a new popup
 		self.p = popup.Popup(
 			text = msg,
 			buttons = buttons
 			)
 
+		#show the new popup
 		self.p.show()
 		popup.display.render()
 
 	def HidePopup(self):
-		self.p.hide()
+		if (self.p is not None):
+			self.p.hide()
+
+	def WriteToFeed(self, msg):
+		self.f.push(msg)
+		display.render()
 
 ui = UI()
 
@@ -32,6 +52,9 @@ def auto(msg):
 
 def dialogue(msg):
 	ui.CreatePopup(msg, [popup.Button(text="enter", hotkey=" ")] )
+
+def info(msg):
+	ui.WriteToFeed(msg)
 
 def question(msg):
 	i = 0
@@ -65,7 +88,7 @@ def message(msg):
 	dialogue(msg)
 	wait()
 
-	
+
 
 def OneSec():
 	time.sleep(1)
@@ -92,13 +115,12 @@ def getInputIntHelper(c):
 	except ValueError:
 		print("Please input a number")
 		return getInputInt(c)
-	
+
 def getInputInt(msg = ""):
 	c = input(msg)
 	return getInputIntHelper(c)
-	
+
 
 def getInputAnyInt():
 	c = input()
 	return getInputIntHelper(c)
-

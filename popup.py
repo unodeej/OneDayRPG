@@ -2,9 +2,9 @@ import display
 import numpy
 
 class Popup:
-    x = display.displayWidth//4
-    y = display.displayHeight//4
-    width = display.displayWidth//2
+    x = display.width//4
+    y = display.height//4
+    width = display.width//2
     border = 2
     textPerLine = width - 2*border
 
@@ -35,15 +35,15 @@ class Popup:
 
         self.data.append([borderSymbol] * self.width) # last line is a border
 
-
-
     def show(self):
         self.viewport = display.addViewport(self.x, self.y, self.data, self.z)
 
     def hide(self):
         # display.clearViewports()
-        if self.viewport is not None:
+        if hasattr(self, 'viewport'):
+            print(self.viewport)
             display.removeViewport(self.viewport)
+            del self.viewport
 
     def splitTextIntoLines(self):
         for i in range(0, len(self.text), self.textPerLine):

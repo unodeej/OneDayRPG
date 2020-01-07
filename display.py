@@ -3,8 +3,8 @@ import os
 import time
 
 transparentTile = " " # to get a transparent character, type display.transparent. using ASCII alt+255
-displayWidth = 160
-displayHeight = 35
+width = 160
+height = 35
 __viewports = []
 
 class Viewport:
@@ -42,7 +42,7 @@ def __clearScreen():
 
 def render():
     __clearScreen()
-    frameBuffer = np.full([displayHeight, displayWidth], " ")
+    frameBuffer = np.full([height, width], " ")
     for viewport in __viewports:
         viewport.renderTo(frameBuffer)
     for row in frameBuffer:
