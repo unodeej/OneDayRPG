@@ -2,7 +2,10 @@ import display
 
 def splitTextIntoLines(text, textPerLine):
     for i in range(0, len(text), textPerLine):
-        yield text[i:i + textPerLine]
+        # break up self.text into chunks of text with max length == self.textPerLine
+        a = text[i:i + textPerLine]
+        for line in a.split("\n"): # \n splits the text into a new line
+            yield line
 
 class Feed:
     viewport = None

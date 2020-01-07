@@ -41,13 +41,15 @@ class Popup:
     def hide(self):
         # display.clearViewports()
         if hasattr(self, 'viewport'):
-            print(self.viewport)
             display.removeViewport(self.viewport)
             del self.viewport
 
     def splitTextIntoLines(self):
         for i in range(0, len(self.text), self.textPerLine):
-            yield self.text[i:i + self.textPerLine]
+            # break up self.text into chunks of text with max length == self.textPerLine
+            a = self.text[i:i + self.textPerLine]
+            for line in a.split("\n"): # \n splits the text into a new line
+                yield line
 
 class Button():
     def __init__(self, text, hotkey):

@@ -54,7 +54,7 @@ def dialogue(msg):
 	ui.CreatePopup(msg, [popup.Button(text="enter", hotkey=" ")] )
 
 def info(msg):
-	ui.WriteToFeed(msg)
+	ui.WriteToFeed(msg + "\n")
 
 def question(msg):
 	i = 0

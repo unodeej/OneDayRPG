@@ -195,7 +195,7 @@ story_points = {
 		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
 	'floor1 19.4': StoryPoint(dialogue, 'Your desk is cluttered, but you can clean it later...',
 		[ Choice(isTrue, True, UI.wait, doNothing, None) ] ),
-	
+
 
     'floor1 30.7': StoryPoint(exitMap, 'Time to go!',
 		[ Choice(isTrue, True, UI.wait, doNothing, 'intro2') ] ),
@@ -227,4 +227,3 @@ story_points = {
 		[ Choice(isTrue, True, doNothing, doNothing, None) ] )
 
 	}
-
