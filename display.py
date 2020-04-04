@@ -3,13 +3,16 @@ import os
 import time
 
 windows_compatibility_mode = False # Some windows versions may not support colors?
-transparent_tile = " " # to get a transparent character, type display.transparent_tile -- using ASCII alt+255
+transparentTile = " " # to get a transparent character, type display.transparentTile -- using ASCII alt+255
 width = 160
 height = 35
 __viewports = []
 
-if os.name == "nt": # if the os is windows:
+if os.name == "posix":
+    os.system("clear")
+else: # if the os is windows:
     os.system("windows_display.cmd")
+    os.system("cls")
 
 class Viewport:
     def __init__(self, x, y, data, z=0):
@@ -23,7 +26,7 @@ class Viewport:
 
     def renderTo(self, buffer):
         bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
-        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparent_tile, bufferSlice, self.data)
+        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparentTile, bufferSlice, self.data)
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
@@ -38,18 +41,26 @@ def clearViewports():
     for v in __viewports:
         __viewports.remove(v)
 
-def __clearScreen():
+def __clearScreen(fast=False):
+    # fast is used for when you have to do a lot of calls quickly,
+    # like when you are walking around
+    # it doesn't clear the screen, so it doesn't ever flicker
+    # but if other text gets on the screen accidentally for some reason,
+    # that text won't be cleared when fast==True
     if os.name == "posix":
-        print("[100A", end="\r")
+        if fast:
+            print("[100A", end="\r")
+        else:
+            os.system("clear")
     else: # current os is windows
-        if not windows_compatibility_mode:
+        if fast and not windows_compatibility_mode:
             print("[100A", end="\r")
         else:
             os.system('cls')
 
 
-def render():
-    __clearScreen()
+def render(fast=False):
+    __clearScreen(fast)
     frameBuffer = np.full([height, width], " ")
     for viewport in __viewports:
         viewport.renderTo(frameBuffer)
@@ -60,7 +71,7 @@ def render():
 
 def demo():
     # square = addViewport(10, 0, np.ones([10,20]))
-    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparent_tile, transparent_tile, transparent_tile, '|'] * 3] * 10)
+    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparentTile, transparentTile, transparentTile, '|'] * 3] * 10)
     render()
     for i in range(20):
         square.x += 1
