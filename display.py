@@ -2,10 +2,14 @@ import numpy as np
 import os
 import time
 
-transparentTile = " " # to get a transparent character, type display.transparent. using ASCII alt+255
+windows_compatibility_mode = False # Some windows versions may not support colors?
+transparent_tile = " " # to get a transparent character, type display.transparent_tile -- using ASCII alt+255
 width = 160
 height = 35
 __viewports = []
+
+if os.name == "nt": # if the os is windows:
+    os.system("windows_display.cmd")
 
 class Viewport:
     def __init__(self, x, y, data, z=0):
@@ -19,7 +23,7 @@ class Viewport:
 
     def renderTo(self, buffer):
         bufferSlice = buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:]
-        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparentTile, bufferSlice, self.data)
+        buffer[self.y:self.y + self.data.shape[0], self.x: self.x + self.data.shape[1]:] = np.where(self.data == transparent_tile, bufferSlice, self.data)
 
 def addViewport(x, y, data, z=0):
     newViewport = Viewport(x, y, data, z)
@@ -36,9 +40,13 @@ def clearViewports():
 
 def __clearScreen():
     if os.name == "posix":
-        os.system('clear')
+        print("[100A", end="\r")
     else: # current os is windows
-        os.system('cls')
+        if not windows_compatibility_mode:
+            print("[100A", end="\r")
+        else:
+            os.system('cls')
+
 
 def render():
     __clearScreen()
@@ -52,10 +60,13 @@ def render():
 
 def demo():
     # square = addViewport(10, 0, np.ones([10,20]))
-    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparentTile, transparentTile, transparentTile, '|'] * 3] * 10)
+    square = addViewport(10, 0, [['|', ' ', ' ', ' ', '|', transparent_tile, transparent_tile, transparent_tile, '|'] * 3] * 10)
     render()
     for i in range(20):
         square.x += 1
         square.y += 1
         time.sleep(.1)
         render()
+
+if __name__ == "__main__":
+    demo()
