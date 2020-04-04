@@ -5,7 +5,6 @@ if (os.name == 'posix'):
     import tty
     import sys
     import termios
-    originalCommandLineSettings = termios.tcgetattr(sys.stdin) # save the terminal settings as they were before the game started
     new = termios.tcgetattr(sys.stdin)
     new[3] &= ~termios.ECHO # turn off ECHO flag (don't show any characters that were typed)
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, new) # apply the above change to the terminal
@@ -15,7 +14,10 @@ else: # current os is windows
 
 def cleanUp(a, b):
     if (os.name == 'posix'):
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, originalCommandLineSettings)
+        new = termios.tcgetattr(sys.stdin)
+        new[3] |= termios.ECHO # turn off ECHO flag (don't show any characters that were typed)
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, new)
+    print("bye")
     quit()
 signal.signal(signal.SIGINT, cleanUp)
 
@@ -35,4 +37,4 @@ def getInput():
         return 'down'
     if nextInput in "qQ":
         print("quitting...")
-        exit(0);
+        cleanUp(0,0);
