@@ -36,6 +36,8 @@ class UI():
 	def HidePopup(self):
 		if (self.p is not None):
 			self.p.hide()
+			display.render()
+
 
 	def WriteToFeed(self, msg):
 		self.f.push(msg)
@@ -51,7 +53,7 @@ def auto(msg):
 	ui.CreatePopup(msg, [])
 
 def dialogue(msg):
-	ui.CreatePopup(msg, [popup.Button(text="enter", hotkey=" ")] )
+	ui.CreatePopup(msg, [popup.Button(text="continue", hotkey="enter")] )
 
 def info(msg):
 	ui.WriteToFeed(msg + "\n")

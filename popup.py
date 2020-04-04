@@ -28,7 +28,7 @@ class Popup:
 
         self.data.append([borderSymbol] + [' '] * (self.width - 2) + [borderSymbol])
         for button in buttons:
-            nextLine = [borderSymbol, " ", ">", ">", " ", "[", button.hotkey ,"]", " ", ]
+            nextLine = [borderSymbol, " ", ">", ">", " ", "[", *(button.hotkey.lower()) ,"]", " ", ]
             nextLine += button.text
             nextLine += [' '] * (self.width - len(nextLine) - 1) + [borderSymbol] # pad the right of the line
             self.data.append(nextLine)
@@ -63,3 +63,6 @@ def demo():
     )
     p.show()
     display.render()
+
+if __name__ == "__main__":
+    demo()
