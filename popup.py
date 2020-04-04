@@ -1,17 +1,17 @@
 import display
 import numpy
+import borders
 
 class Popup:
     x = display.width//4
     y = display.height//4
     width = display.width//2
-    border = 2
-    textPerLine = width - 2*border
+    borderWidth = 2
+    textPerLine = width - 2*borderWidth
 
-    def __init__(self, text, buttons, centeredOnScreen=True, x=0, y=0, z=-1000):
+    def __init__(self, text, buttons, centeredOnScreen=True, x=0, y=0, z=-1000, border=borders.lineDouble):
         self.text = text
         self.buttons = buttons
-        borderSymbol = "░"
 
         self.z = z
         if not centeredOnScreen:
@@ -19,21 +19,21 @@ class Popup:
             self.y = y
 
         self.data = []
-        self.data.append([borderSymbol] * self.width) # first line is a border
+        self.data.append([border.topleft, *(border.top * (self.width - 2)), border.topright]) # first line is a border
         for line in self.splitTextIntoLines():
-            nextLine = [borderSymbol, " "]
+            nextLine = [border.left, " "]
             nextLine += list(line)
-            nextLine += [' '] * (self.width - len(nextLine) - 1) + [borderSymbol] # pad the right of the line
+            nextLine += [' '] * (self.width - len(nextLine) - 1) + [border.right] # pad the right of the line
             self.data.append(nextLine)
 
-        self.data.append([borderSymbol] + [' '] * (self.width - 2) + [borderSymbol])
+        self.data.append([border.left] + [' '] * (self.width - 2) + [border.right])
         for button in buttons:
-            nextLine = [borderSymbol, " ", ">", ">", " ", "[", *(button.hotkey.lower()) ,"]", " ", ]
+            nextLine = [border.left, " ", ">", ">", " ", "[", *(button.hotkey.lower()) ,"]", " ", ]
             nextLine += button.text
-            nextLine += [' '] * (self.width - len(nextLine) - 1) + [borderSymbol] # pad the right of the line
+            nextLine += [' '] * (self.width - len(nextLine) - 1) + [border.right] # pad the right of the line
             self.data.append(nextLine)
 
-        self.data.append([borderSymbol] * self.width) # last line is a border
+        self.data.append([border.bottomleft, *(border.bottom * (self.width - 2)), border.bottomright]) # last line is a border
 
     def show(self):
         self.viewport = display.addViewport(self.x, self.y, self.data, self.z)
