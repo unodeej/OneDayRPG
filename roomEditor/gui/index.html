@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>One Day RPG Room Editor</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1>One Day RPG</h1>
+    <h2>Room Editor</h2>
+    <canvas id="editor" width="500" height="600"></canvas>
+
+    <template id="item-template">
+      <h3>Wall</h3>
+      <p>ICON: │</p>
+      <p>┌─┘ └─┐</p>
+      <p>Solid: Yes</p>
+      <p>Moveable: No</p>
+    </template>
+
+    <div id="items">
+      <section id="selected" class="item">
+        <h3>Wall</h3>
+        <p>ICON: ▓</p>
+        <p>▓▓▓ ▓▓▓</p>
+        <p>Solid: Yes</p>
+        <p>Moveable: No</p>
+      </section>
+      <div class="spacer"></div>
+      <section class="item">
+        <h3>Wall</h3>
+        <p>ICON: ▓</p>
+        <p>▓▓▓ ▓▓▓</p>
+        <p>Solid: Yes</p>
+        <p>Moveable: No</p>
+      </section>
+      </section>
+    </div>
+
+    <script src="scripts/items.js" charset="utf-8"></script>
+    <script src="scripts/draw.js" charset="utf-8"></script>
+    <script src="scripts/controller.js" charset="utf-8"></script>
+  </body>
+</html>
