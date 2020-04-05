@@ -5,9 +5,15 @@ const Mode = {
   select: 0,
   drawFree: 1,
 }
+const Sides = {
+  top: 1,
+  right: 2,
+  bottom: 4,
+  left: 8,
+}
 
 // helper variables
-let items = []
+let cells = [] // each cell in cells is an array containing [material_name, icon]
 let previousClick
 let selected = [] // x0, y0, x1, y1
 let mode = Mode.drawFree;
@@ -27,7 +33,7 @@ canvas.onmousedown = function(event) {
       select(x, y)
       break;
     case Mode.drawFree:
-      setItem(x, y, materialSelected)
+      setCell(x, y, materialSelected)
       break;
   }
   draw.update()
@@ -44,7 +50,7 @@ canvas.onmousemove = function(event) {
       select(previousClick[0], previousClick[1], x, y)
       break;
     case Mode.drawFree:
-      setItem(x, y, materialSelected);
+      setCell(x, y, materialSelected);
       break;
   }
   draw.update()
@@ -69,19 +75,27 @@ function xyFromMouse(mx, my) {
 }
 
 function getCell(x, y) {
-  if (items[x] == null) {
-    return null;
-  } else if (items[x][y] == null) {
-    return null;
+  if (hasCell(x, y)) {
+    return cells[x][y];
   } else {
-    return items[x][y];
+    return undefined;
   }
 }
 
-function getCellItem(x, y) {
+function hasCell(x, y) {
+  if (cells[x] == undefined) {
+    return false;
+  } else if (cells[x][y] == undefined) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function getCellMaterialID(x, y) {
   let cell = getCell(x, y);
-  if (cell == null) {
-    return null
+  if (cell == undefined) {
+    return undefined
   } else {
     return cell[0];
   }
@@ -89,21 +103,73 @@ function getCellItem(x, y) {
 
 function getCellIcon(x, y) {
   let cell = getCell(x, y);
-  if (cell == null) {
+  if (cell == undefined) {
     return " "
   } else {
     return cell[1];
   }
 }
 
-function setItem(x, y, value) {
+function setCell(x, y, value) {
   if (x >= mapWidth || y >= mapHeight) {
     return;
   }
-  if (items[x] == null) {
-    items[x] = [];
+  if (cells[x] == undefined) {
+    cells[x] = [];
   }
-  items[x][y] = [value, materials[value].icon]
+  cells[x][y] = [value, getAppropriateIcon(x, y, materials[value])]
+  updateAllNeighbors(x, y)
+}
+
+function updateAllNeighbors(x,y) {
+  updateNeighbor(x, y-1) // top neighbor
+  updateNeighbor(x, y+1) // bottom neighbor
+  updateNeighbor(x-1, y) // left neighbor
+  updateNeighbor(x+1, y) // right neighbor
+}
+
+function updateNeighbor(x, y) {
+  if (hasCell(x, y)) {
+    let c = cells[x][y]
+    c[1] = getAppropriateIcon(x, y, materials[c[0]])
+  }
+}
+
+function getAppropriateIcon(x, y, mat) {
+  if (mat.linking == LinkMode.none) {
+    return mat.unlinkedIcons[0];
+  }
+  // get list of neighboring cells of the same material type
+  let sides = 0;
+  sides += (mat == materials[getCellMaterialID(x, y-1)]) * Sides.top
+  sides += (mat == materials[getCellMaterialID(x-1, y)]) * Sides.left
+  sides += (mat == materials[getCellMaterialID(x, y+1)]) * Sides.bottom
+  sides += (mat == materials[getCellMaterialID(x+1, y)]) * Sides.right
+  // select the appropriate icon based on which sides we have
+  switch (sides) {
+    case Sides.top + Sides.left:
+      return mat.linkedIcons[LinkedIconIndex.bottomright];
+    case Sides.top:
+      return mat.linkedIcons[LinkedIconIndex.right]; // bottomright, bottomleft, and left also work
+    case Sides.top + Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.bottomleft];
+    case Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
+    case Sides.bottom + Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.topleft];
+    case Sides.bottom:
+      return mat.linkedIcons[LinkedIconIndex.right]; // topright, topleft, and left also work
+    case Sides.bottom + Sides.left:
+      return mat.linkedIcons[LinkedIconIndex.topright];
+    case Sides.left:
+      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
+    case Sides.left + Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
+    case Sides.top + Sides.bottom:
+      return mat.linkedIcons[LinkedIconIndex.right]; // left also works
+    default:
+      return mat.unlinkedIcons[0];
+  }
 }
 
 function select(x0, y0, x1, y1) {
