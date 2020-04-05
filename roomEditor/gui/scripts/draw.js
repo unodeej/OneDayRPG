@@ -8,6 +8,9 @@ const c_lines = "#444";
 const c_highlight = "#1060F050";
 const c_text = "#fff";
 
+// html elements
+palette = document.getElementById("palette");
+
 const draw = {
   ////////////////////////////////////////////////////
   /// update all visuals
@@ -15,7 +18,7 @@ const draw = {
   update: () => {
     draw.reset();
     draw.text();
-    draw.highlight(selected)
+    draw.highlight(selected);
   },
 
   ////////////////////////////////////////////////////
@@ -28,7 +31,6 @@ const draw = {
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fill();
 
-    // draw grid
     draw.grid()
   },
 
@@ -61,7 +63,7 @@ const draw = {
     ctx.textBaseline = "bottom";
     for (let i = 0; i < mapWidth; i++) {
       for (let j = 0; j < mapHeight; j++) {
-        ctx.fillText(getItem(i, j), (i) * cellWidth, (j+1) * cellHeight);
+        ctx.fillText(getCellIcon(i, j), (i) * cellWidth, (j+1) * cellHeight);
       }
     }
   },
@@ -82,17 +84,57 @@ const draw = {
     ctx.fillStyle = c_highlight;
     ctx.fill();
   },
-}
 
-// highlight: (x0, y0, x1, y1) => {
-//   console.log("HI")
-//   cellx0 = Math.floor(x0 / cellWidth) * cellWidth
-//   celly0 = Math.floor(y0 / cellHeight) * cellHeight
-//   cellx1 = Math.ceil(x1 / cellWidth) * cellWidth
-//   celly1 = Math.ceil(y1 / cellHeight) * cellHeight
-//
-//   ctx.beginPath();
-//   ctx.rect(cellx0, celly0, cellx1 - cellx0, celly1 - celly0)
-//   ctx.fillStyle = c_highlight;
-//   ctx.fill();
-// },
+  ////////////////////////////////////////////////////
+  /// list all available materials
+  ///
+  listMaterials : () => {
+    // get the template element:
+    let template = document.getElementById("mat-template");
+    // get the div element representing the whole material
+    let materialDiv = template.content.querySelector("div");
+
+    // for each material, display the material in the HTML
+    Object.values(materials).forEach(function (m) { // m is a material
+      // clone the template
+      let clone = document.importNode(materialDiv, true);
+      // put the clone in the html
+      palette.appendChild(clone);
+      // modify the clone's html to fit the material
+      clone.querySelector(".mat-name").innerHTML = m.name;
+      clone.querySelector(".mat-icon").innerHTML = m.unlinkedIcons[0];
+      clone.querySelector(".mat-solid").innerHTML = m.solid ? "Yes" : "No";
+      clone.querySelector(".mat-moveable").innerHTML = m.moveable ? "Yes" : "No";
+
+      // demo a few tiles in a row using the material
+      let demo;
+      if (m.linking == LinkMode.none) {
+        demo = m.unlinkedIcons[0]
+        demo = demo + demo + demo + " " + demo + demo + demo
+      } else {
+        demo = m.linkedIcons[1]
+        demo = m.linkedIcons[0] + demo + m.linkedIcons[2] + " " + demo + demo + demo
+      }
+      clone.querySelector(".mat-demo").innerHTML = demo;
+
+      // Add click event listener
+      clone.onclick = () => {selectMaterial(m.name)};
+    });
+  },
+
+  ////////////////////////////////////////////////////
+  /// Highlight currently selected material
+  ///
+  highlightSelectedMaterial() {
+    // For each material in the palette:
+    palette.querySelectorAll(".material").forEach((mat, i) => {
+      let matName = mat.querySelector(".mat-name").innerHTML;
+      if (matName == materialSelected) {
+        mat.classList.add("selected");
+      } else {
+        mat.classList.remove("selected");
+      }
+    });
+
+  }
+}

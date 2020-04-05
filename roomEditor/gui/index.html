@@ -10,35 +10,31 @@
     <h2>Room Editor</h2>
     <canvas id="editor" width="500" height="600"></canvas>
 
-    <template id="item-template">
-      <h3>Wall</h3>
-      <p>ICON: │</p>
-      <p>┌─┘ └─┐</p>
-      <p>Solid: Yes</p>
-      <p>Moveable: No</p>
+    <template id="mat-template">
+      <div class="material">
+        <h3 class="mat-name">Placeholder</h3>
+        <p>ICON: <span class="mat-icon">│</span></p>
+        <p class="mat-demo">┌─┘ └─┐</p>
+        <p>Solid: <span class="mat-solid">Yes</span> </p>
+        <p>Moveable: <span class="mat-moveable">No</span> </p>
+      </div>
     </template>
 
-    <div id="items">
-      <section id="selected" class="item">
-        <h3>Wall</h3>
-        <p>ICON: ▓</p>
-        <p>▓▓▓ ▓▓▓</p>
-        <p>Solid: Yes</p>
-        <p>Moveable: No</p>
+    <div id="materials">
+      <section id="hovered" class="material">
+        <h3 class="mat-name">Placeholder</h3>
+        <p>ICON: <span class="mat-icon">│</span></p>
+        <p class="mat-demo">┌─┘ └─┐</p>
+        <p>Solid: <span class="mat-solid">Yes</span> </p>
+        <p>Moveable: <span class="mat-moveable">No</span> </p>
       </section>
       <div class="spacer"></div>
-      <section class="item">
-        <h3>Wall</h3>
-        <p>ICON: ▓</p>
-        <p>▓▓▓ ▓▓▓</p>
-        <p>Solid: Yes</p>
-        <p>Moveable: No</p>
-      </section>
-      </section>
+      <div id="palette"></div>
+
     </div>
 
-    <script src="scripts/items.js" charset="utf-8"></script>
+    <script src="scripts/materials.js" charset="utf-8"></script>
     <script src="scripts/draw.js" charset="utf-8"></script>
-    <script src="scripts/controller.js" charset="utf-8"></script>
+    <script src="scripts/control.js" charset="utf-8"></script>
   </body>
 </html>

@@ -13,6 +13,7 @@ let selected = [] // x0, y0, x1, y1
 let mode = Mode.drawFree;
 let mapWidth = 0;
 let mapHeight = 0;
+let materialSelected;
 
 canvas.onmousedown = function(event) {
   draw.reset()
@@ -26,7 +27,7 @@ canvas.onmousedown = function(event) {
       select(x, y)
       break;
     case Mode.drawFree:
-      setItem(x, y, "B")
+      setItem(x, y, materialSelected)
       break;
   }
   draw.update()
@@ -43,7 +44,7 @@ canvas.onmousemove = function(event) {
       select(previousClick[0], previousClick[1], x, y)
       break;
     case Mode.drawFree:
-      setItem(x, y, "B");
+      setItem(x, y, materialSelected);
       break;
   }
   draw.update()
@@ -56,19 +57,42 @@ function start() {
   canvas.width = mapWidth * cellWidth
   // initialize grid
   draw.reset();
+  // default selected material to first in the list
+  materialSelected = Object.keys(materials)[0]
+  // show palette of materials
+  draw.listMaterials();
+  draw.highlightSelectedMaterial();
 }
 
 function xyFromMouse(mx, my) {
   return [Math.floor(mx/cellWidth), Math.floor(my/cellHeight)];
 }
 
-function getItem(x, y) {
+function getCell(x, y) {
   if (items[x] == null) {
-    return " ";
+    return null;
   } else if (items[x][y] == null) {
-    return " ";
+    return null;
   } else {
     return items[x][y];
+  }
+}
+
+function getCellItem(x, y) {
+  let cell = getCell(x, y);
+  if (cell == null) {
+    return null
+  } else {
+    return cell[0];
+  }
+}
+
+function getCellIcon(x, y) {
+  let cell = getCell(x, y);
+  if (cell == null) {
+    return " "
+  } else {
+    return cell[1];
   }
 }
 
@@ -79,7 +103,7 @@ function setItem(x, y, value) {
   if (items[x] == null) {
     items[x] = [];
   }
-  items[x][y] = value
+  items[x][y] = [value, materials[value].icon]
 }
 
 function select(x0, y0, x1, y1) {
@@ -89,6 +113,11 @@ function select(x0, y0, x1, y1) {
     return;
   }
   selected = [Math.min(x0, x1), Math.min(y0, y1), Math.max(x0, x1), Math.max(y0, y1)];
+}
+
+function selectMaterial(materialName) {
+  materialSelected = materialName;
+  draw.highlightSelectedMaterial();
 }
 
 start();

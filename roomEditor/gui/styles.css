@@ -14,23 +14,45 @@ h2 {
   font-family: monospace;
 }
 
-.item {
-  border: 1px solid #ff0;
-  padding: 5px;
-  min-width: 92px;
+.material {
+  border: 1px solid #aaa;
+  padding: 7px;
+  padding-top: 4px;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+.material:hover {
+  border: 2px solid #fff;
+  padding: 6px;
+  padding-top: 3px;
+  z-index: 1;
+  cursor: pointer;
 }
 
 .spacer {
   min-width: 40px;
 }
 
-#selected {
-  border: 3px solid #0ff;
+.selected, .selected:hover {
+  border: 3px solid #ff0;
+  padding: 5px;
   padding-top: 2px;
+  cursor: default;
 }
 
-#items {
+#hovered {
+  border: 3px solid #0ff;
+  padding-top: 2px;
+  cursor: default;
+}
+
+#materials {
   position: fixed;
   padding: 5px;
+  display: flex;
+}
+
+#palette {
   display: flex;
 }

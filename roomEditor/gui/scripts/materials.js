@@ -22,7 +22,7 @@ const LinkMode = {
   four: 2,     // can link with any number of sides like redstone
 }
 
-class Item {
+class Material {
   constructor(name, solid, moveable, linking, unlinkedIcons, linkedIcons) {
     this.name = name;
     this.solid = solid;
@@ -32,4 +32,10 @@ class Item {
     this.linkedIcons = linkedIcons;
     this.icon = unlinkedIcons[0];
   }
+}
+
+materials = {
+  Wall: new Item("Wall", true, false, LinkMode.none, "Q"),
+  Bumble: new Item("Bumble", false, true, LinkMode.none, "B"),
+  Pipe: new Item("Pipe", false, false, LinkMode.two, ["|", "─"], ["┌", "─", "┐", "│", "┘", "─", "└", "│"]),
 }
