@@ -6,9 +6,9 @@ const Mode = {
   drawFree: 1,
 }
 const Sides = {
-  top: 1,
+  up: 1,
   right: 2,
-  bottom: 4,
+  down: 4,
   left: 8,
 }
 
@@ -141,34 +141,49 @@ function getAppropriateIcon(x, y, mat) {
   }
   // get list of neighboring cells of the same material type
   let sides = 0;
-  sides += (mat == materials[getCellMaterialID(x, y-1)]) * Sides.top
+  sides += (mat == materials[getCellMaterialID(x, y-1)]) * Sides.up
   sides += (mat == materials[getCellMaterialID(x-1, y)]) * Sides.left
-  sides += (mat == materials[getCellMaterialID(x, y+1)]) * Sides.bottom
+  sides += (mat == materials[getCellMaterialID(x, y+1)]) * Sides.down
   sides += (mat == materials[getCellMaterialID(x+1, y)]) * Sides.right
   // select the appropriate icon based on which sides we have
   switch (sides) {
-    case Sides.top + Sides.left:
-      return mat.linkedIcons[LinkedIconIndex.bottomright];
-    case Sides.top:
-      return mat.linkedIcons[LinkedIconIndex.right]; // bottomright, bottomleft, and left also work
-    case Sides.top + Sides.right:
-      return mat.linkedIcons[LinkedIconIndex.bottomleft];
+    case Sides.up + Sides.left:
+      return mat.linkedIcons[LinkedIconIndex.UpAndLeft];
+    case Sides.up:
+      return mat.linkedIcons[LinkedIconIndex.Vertical]; // bottomright, bottomleft, and left also work
+    case Sides.up + Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.UpAndRight];
     case Sides.right:
-      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
-    case Sides.bottom + Sides.right:
-      return mat.linkedIcons[LinkedIconIndex.topleft];
-    case Sides.bottom:
-      return mat.linkedIcons[LinkedIconIndex.right]; // topright, topleft, and left also work
-    case Sides.bottom + Sides.left:
-      return mat.linkedIcons[LinkedIconIndex.topright];
+      return mat.linkedIcons[LinkedIconIndex.Horizontal]; // top also works
+    case Sides.down + Sides.right:
+      return mat.linkedIcons[LinkedIconIndex.DownAndRight];
+    case Sides.down:
+      return mat.linkedIcons[LinkedIconIndex.Vertical]; // topright, DownAndRight, and left also work
+    case Sides.down + Sides.left:
+      return mat.linkedIcons[LinkedIconIndex.DownAndLeft];
     case Sides.left:
-      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
+      return mat.linkedIcons[LinkedIconIndex.Horizontal]; // top also works
     case Sides.left + Sides.right:
-      return mat.linkedIcons[LinkedIconIndex.bottom]; // top also works
-    case Sides.top + Sides.bottom:
-      return mat.linkedIcons[LinkedIconIndex.right]; // left also works
-    default:
+      return mat.linkedIcons[LinkedIconIndex.Horizontal]; // top also works
+    case Sides.up + Sides.down:
+      return mat.linkedIcons[LinkedIconIndex.Vertical]; // left also works
+    case 0: // no sides
       return mat.unlinkedIcons[0];
+  }
+
+  if (mat.linking == LinkMode.four) {
+    switch (sides) {
+      case Sides.left + Sides.up + Sides.right:
+        return mat.linkedIcons[LinkedIconIndex.HorizontalAndUp]; // all also works
+      case Sides.up + Sides.right + Sides.down:
+        return mat.linkedIcons[LinkedIconIndex.VerticalAndRight]; // all also works
+      case Sides.left + Sides.down + Sides.right:
+        return mat.linkedIcons[LinkedIconIndex.HorizontalAndDown]; // all also works
+      case Sides.up + Sides.down + Sides.left:
+        return mat.linkedIcons[LinkedIconIndex.VerticalAndLeft]; // all also works
+      case Sides.up + Sides.left + Sides.right + Sides.down:
+        return mat.linkedIcons[LinkedIconIndex.All];
+    }
   }
 }
 

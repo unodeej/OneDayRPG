@@ -41,8 +41,9 @@ h2 {
   cursor: default;
 }
 
-#hovered {
+#hovered, #hovered:hover {
   border: 3px solid #0ff;
+  padding: 7px;
   padding-top: 2px;
   cursor: default;
 }
