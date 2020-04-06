@@ -8,10 +8,19 @@
   <body>
     <h1>One Day RPG</h1>
     <h2>Room Editor</h2>
-    <div id="cell-cursor"></div>
-    <div id="canvas-container">
+
+    <div id="toolbox">
+      <img class="tool" id="tdrawFree" src="img/tool_draw.png" alt="Draw Lines">
+      <img class="tool" id="tfill" src="img/tool_fill.png" alt="Paint Fill">
+      <img class="tool" id="tselect" src="img/tool_select.png" alt="Select Parts Of The Picture (Ctrl)">
+      <img class="tool" id="tmove" src="img/tool_move.png" alt="Move Selections">
+    </div>
+
+    <div id="editor-container">
       <canvas id="editor" width="1440" height="630"></canvas>
     </div>
+
+    <div id="cell-cursor"></div>
 
     <template id="mat-template">
       <div class="material">
@@ -33,6 +42,15 @@
       </section>
       <div class="spacer"></div>
       <div id="palette"></div>
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+      <div class="instructions">
+        <h2>Left-Click to place blocks.</h2>
+        <h2>Right-click to erase.</h2>
+        <h2>Hold [Ctrl] to select.</h2>
+        <h2>[Delete] to erase your selection.</h2>
+      </div>
     </div>
 
 

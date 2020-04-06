@@ -8,9 +8,11 @@ const c_bg = "#000000";
 const c_lines = "#444";
 const c_highlight = "#1060F050";
 const c_text = "#fff";
+const c_tool = "#00436f";
 
 // html elements
-palette = document.getElementById("palette");
+const palette = document.getElementById("palette");
+const toolbox = document.getElementById("toolbox");
 
 const draw = {
   ////////////////////////////////////////////////////
@@ -138,6 +140,25 @@ const draw = {
   },
 
   ////////////////////////////////////////////////////
+  /// Highlight currently selected tool
+  ///
+  highlightSelectedTool() {
+    toolbox.querySelectorAll(".tool").forEach((tool) => {
+      // reset tools to their default html settings
+      tool.style.backgroundColor = "#00000000";
+      tool.classList.remove("selected");
+      // highlight current mode, including override
+      if (getModeWithOverride() == Mode[(tool.id.substring(1))]) { // if current tool's id matches the current mode
+        tool.style.backgroundColor = c_tool;
+      }
+      // add "selected" class to current mode, excluding override
+      if (mode == Mode[(tool.id.substring(1))]) { // if current tool's id matches the current mode
+        tool.classList.add("selected");
+      }
+    });
+  },
+
+  ////////////////////////////////////////////////////
   /// Highlight currently selected material
   ///
   highlightHoveredCell(left, top, cellX, cellY) {
@@ -153,11 +174,9 @@ const draw = {
     switch (getModeWithOverride()) {
       case Mode.select:
         canvas.style.cursor = "crosshair";
-        console.log("heeey")
         break;
       default:
         canvas.style.cursor = "cell";
-        console.log("nooo")
         break;
     }
   },

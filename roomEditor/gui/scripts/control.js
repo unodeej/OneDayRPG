@@ -9,6 +9,7 @@ const Mode = {
   none: 0,
   select: 1,
   drawFree: 2,
+  fill: 3,
 }
 const Sides = {
   up: 1,
@@ -140,6 +141,8 @@ function start() {
   // show palette of materials
   draw.listMaterials();
   draw.highlightSelectedMaterial();
+  // show selected tool
+  draw.highlightSelectedTool();
 }
 
 function xyFromMouse(mx, my) {
@@ -226,6 +229,7 @@ function UpdateOverrideModeIfPossible() {
   if (mouseButtons == 0) {
     overrideMode = desiredOverrideMode;
     draw.showModeCursor();
+    draw.highlightSelectedTool();
   }
 }
 

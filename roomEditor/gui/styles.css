@@ -23,6 +23,7 @@ h2 {
   padding-top: 4px;
   min-width: 100px;
   max-width: 100px;
+  cursor: pointer;
 }
 
 .material:hover {
@@ -30,17 +31,30 @@ h2 {
   padding: 6px;
   padding-top: 3px;
   z-index: 1;
-  cursor: pointer;
 }
 
 .spacer {
   min-width: 40px;
 }
 
-.selected, .selected:hover {
+.tool {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.tool:hover {
+  padding: 3px;
+  border: 7px solid #00436f;
+  border-style: dashed;
+}
+
+.material.selected, .material.selected:hover {
   border: 3px solid #ff0;
   padding: 5px;
   padding-top: 2px;
+}
+
+.selected {
   cursor: default;
 }
 
@@ -63,7 +77,7 @@ h2 {
 
 #cell-cursor {
   position: absolute;
-  left: 50%;
+  visibility: hidden;
   min-width: 9px;
   max-width: 9px;
   min-height: 18px;
@@ -72,7 +86,7 @@ h2 {
   pointer-events: none;
 }
 
-#canvas-container {
+#editor-container {
   display: flex;
   flex-direction: column;
 }
@@ -81,4 +95,13 @@ h2 {
   border: 1px solid white;
   align-self: center;
   cursor: cell;
+}
+
+#toolbox {
+  border: 3px double white;
+  min-width: 70px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  right: 0;
 }
