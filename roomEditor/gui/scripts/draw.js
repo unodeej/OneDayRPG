@@ -73,7 +73,6 @@ const draw = {
   ///
   highlight: (selected) => {
     [x0, y0, x1, y1] = selected
-    x1++; y1++;
     x0 *= cellWidth;
     y0 *= cellHeight;
     x1 *= cellWidth;
@@ -118,7 +117,7 @@ const draw = {
       clone.querySelector(".mat-demo").innerHTML = demo;
 
       // Add click event listener
-      clone.onclick = () => {selectMaterial(m.name)};
+      clone.onclick = () => {setPrimaryMaterial(m.name)};
     });
   },
 
@@ -129,7 +128,7 @@ const draw = {
     // For each material in the palette:
     palette.querySelectorAll(".material").forEach((mat, i) => {
       let matName = mat.querySelector(".mat-name").innerHTML;
-      if (matName == materialSelected) {
+      if (matName == materialsSelected[0]) {
         mat.classList.add("selected");
       } else {
         mat.classList.remove("selected");

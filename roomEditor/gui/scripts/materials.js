@@ -35,7 +35,7 @@ class Material {
 
 materials = {
   Erasor: new Material("Erasor", false, false, LinkMode.none, " "),
-  Wall: new Material("Wall", true, false, LinkMode.none, "Q"),
+  Wall: new Material("Wall", true, false, LinkMode.none, "▓"),
   Bumble: new Material("Bumble", false, true, LinkMode.none, "B"),
   Pipe: new Material("Pipe", false, false, LinkMode.four, ["│", "─"], ["┌", "─", "┐", "│", "┘", "└", "┬", "┤", "┴", "├", "┼"]),
 }
