@@ -7,12 +7,15 @@ body {
 h1 {
   text-align: center;
   font-family: monospace;
+  margin-bottom: 6px;
 }
 
 h2 {
   text-align: center;
   font-family: monospace;
+  margin-top: 0;
 }
+
 
 .material {
   border: 1px solid #aaa;
@@ -56,4 +59,26 @@ h2 {
 
 #palette {
   display: flex;
+}
+
+#cell-cursor {
+  position: absolute;
+  left: 50%;
+  min-width: 9px;
+  max-width: 9px;
+  min-height: 18px;
+  max-height: 18px;
+  background-color: #ffffff50;
+  pointer-events: none;
+}
+
+#canvas-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#editor {
+  border: 1px solid white;
+  align-self: center;
+  cursor: cell;
 }

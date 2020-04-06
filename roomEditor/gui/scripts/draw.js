@@ -1,6 +1,7 @@
 // constants
-const cellWidth = 10;
-const cellHeight = 20;
+const cellWidth = 9;
+const cellHeight = 18;
+const cellCursor = document.querySelector("#cell-cursor")
 
 // colors
 const c_bg = "#000000";
@@ -18,13 +19,13 @@ const draw = {
   update: () => {
     draw.reset();
     draw.text();
-    draw.highlight(selected);
+    draw.highlight();
   },
 
   ////////////////////////////////////////////////////
   /// reset canvas to black background with grid
   ///
-  reset: () => {
+  reset() {
     // make background black
     ctx.beginPath();
     ctx.fillStyle = c_bg;
@@ -37,7 +38,7 @@ const draw = {
   ////////////////////////////////////////////////////
   /// draw the grid
   ///
-  grid: () => {
+  grid() {
     ctx.strokeStyle = c_lines;
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -57,7 +58,7 @@ const draw = {
   ////////////////////////////////////////////////////
   /// write in all of the text
   ///
-  text: () => {
+  text() {
     ctx.fillStyle = c_text;
     ctx.font = '16.5px monospace';
     ctx.textBaseline = "bottom";
@@ -71,7 +72,7 @@ const draw = {
   ////////////////////////////////////////////////////
   /// highlight some number of cell
   ///
-  highlight: (selected) => {
+  highlight() {
     [x0, y0, x1, y1] = selected
     x0 *= cellWidth;
     y0 *= cellHeight;
@@ -134,6 +135,30 @@ const draw = {
         mat.classList.remove("selected");
       }
     });
+  },
 
-  }
+  ////////////////////////////////////////////////////
+  /// Highlight currently selected material
+  ///
+  highlightHoveredCell(left, top, cellX, cellY) {
+    cellCursor.style.left = left + (cellX * cellWidth) + 1 + "px";
+    cellCursor.style.top = top + (cellY * cellHeight) + 1 + "px";
+  },
+
+  ////////////////////////////////////////////////////
+  /// The canvas uses a different mouse cursor in some modes
+  /// This function updates the css to set the cursor.
+  ///
+  showModeCursor() {
+    switch (getModeWithOverride()) {
+      case Mode.select:
+        canvas.style.cursor = "crosshair";
+        console.log("heeey")
+        break;
+      default:
+        canvas.style.cursor = "cell";
+        console.log("nooo")
+        break;
+    }
+  },
 }

@@ -1,3 +1,7 @@
+//------------------------------------------------------//
+// Variables                                            //
+//------------------------------------------------------//
+
 // constants
 const canvas = document.getElementById("editor");
 const ctx = canvas.getContext("2d");
@@ -25,6 +29,11 @@ let mapHeight = 35; // "   "      "     "
 let materialsSelected = [];
 let materialSelectedIndex; // 0 for primary, 1 for alt
 let mouseButtons; // bit flag of current mouse buttons, updated at onmousedown, onmouseup, and onmousemove
+let mouseX = -1, mouseY = -1; // the cell coordinates of the last cell that the mouse hovered over
+
+//------------------------------------------------------//
+// HTML Event Handlers                                  //
+//------------------------------------------------------//
 
 canvas.oncontextmenu = function(event) {
   event.preventDefault();
@@ -32,10 +41,11 @@ canvas.oncontextmenu = function(event) {
 
 document.onkeydown = function(event) {
   switch(event.keyCode) {
-    case 16:  // shift
-      desiredOverrideMode = Mode.select
+    case 17:  // control
+      desiredOverrideMode = Mode.select;
+      UpdateOverrideModeIfPossible();
       break;
-    // 17 == control
+    // 16 == shift
     // 18 == alt
     // 32 == space
     case 46: // delete
@@ -48,8 +58,9 @@ document.onkeydown = function(event) {
 
 document.onkeyup = function(event) {
   switch(event.keyCode) {
-    case 16:
+    case 17:
       desiredOverrideMode = Mode.none
+      UpdateOverrideModeIfPossible();
       break;
   }
 }
@@ -59,13 +70,16 @@ canvas.onmousedown = function(event) {
   mouseButtons = event.buttons;
   draw.reset()
   rect = canvas.getBoundingClientRect()
-  let x, y;
-  [x,y] = xyFromMouse(event.clientX - rect.left, event.clientY - rect.top);
+  let [x,y] = xyFromMouse(event.clientX - rect.left, event.clientY - rect.top);
   previousClick = [x, y]
 
   switch (getModeWithOverride()) {
     case Mode.select:
-      select(x, y);
+      if (event.button == 2) {
+        deselectAll();
+      } else {
+        select(x, y);
+      }
       break;
     case Mode.drawFree:
       deselectAll();
@@ -78,11 +92,13 @@ canvas.onmousedown = function(event) {
 
 canvas.onmousemove = function(event) {
   mouseButtons = event.buttons;
-  if (event.buttons == 0)
-    return;
   rect = canvas.getBoundingClientRect();
-  [x,y] = xyFromMouse(event.clientX - rect.left, event.clientY - rect.top);
-
+  mouseX = event.clientX;
+  mouseY = event.clientY
+  let [x,y] = xyFromMouse(event.clientX - rect.left, event.clientY - rect.top);
+  draw.highlightHoveredCell(rect.left, rect.top, x, y);
+  if (event.buttons == 0)
+  return;
   switch (getModeWithOverride()) {
     case Mode.select:
       select(previousClick[0], previousClick[1], x, y)
@@ -98,6 +114,19 @@ canvas.onmouseup = function(event) {
     mouseButtons = event.buttons;
     UpdateOverrideModeIfPossible();
 }
+
+canvas.onmouseenter = function(event) {
+  cellCursor.style.visibility = "visible";
+}
+
+canvas.onmouseleave = function(event) {
+  cellCursor.style.visibility = "hidden";
+}
+
+//------------------------------------------------------//
+// Other Functions                                      //
+//------------------------------------------------------//
+
 
 function start() {
   // resize the canvas
@@ -180,7 +209,6 @@ function updateAllNeighbors(x,y) {
 
 function getModeWithOverride() {
   if (overrideMode == Mode.none) {
-    console.log(mode)
     return mode;
   } else {
     return overrideMode;
@@ -195,8 +223,10 @@ function getModeWithOverride() {
 /// override the base mode)
 ///
 function UpdateOverrideModeIfPossible() {
-  if (mouseButtons == 0)
+  if (mouseButtons == 0) {
     overrideMode = desiredOverrideMode;
+    draw.showModeCursor();
+  }
 }
 
 function swapMaterials() {

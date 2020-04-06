@@ -8,7 +8,10 @@
   <body>
     <h1>One Day RPG</h1>
     <h2>Room Editor</h2>
-    <canvas id="editor" width="500" height="600"></canvas>
+    <div id="cell-cursor"></div>
+    <div id="canvas-container">
+      <canvas id="editor" width="1440" height="630"></canvas>
+    </div>
 
     <template id="mat-template">
       <div class="material">
@@ -30,8 +33,8 @@
       </section>
       <div class="spacer"></div>
       <div id="palette"></div>
-
     </div>
+
 
     <script src="scripts/materials.js" charset="utf-8"></script>
     <script src="scripts/draw.js" charset="utf-8"></script>
